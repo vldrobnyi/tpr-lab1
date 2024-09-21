@@ -1,0 +1,40 @@
+.calc-area {
+    padding: 0 200px;
+}
+
+.row {
+    margin: 0;
+}
+
+.matrix {
+    width: fit-content;
+    display: flex;
+    gap: 4px;
+    flex-direction: column;
+
+    & > div {
+        display: flex;
+        gap: 4px;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+        text-align: center;
+
+        &:disabled {
+            color: #000;
+        }
+    }
+
+    .row-element-name {
+        position: absolute;
+        left: -24px;
+    }
+}
