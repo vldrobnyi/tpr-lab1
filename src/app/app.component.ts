@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { min } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +30,7 @@ export class AppComponent {
   strictR: number[][] = [];
   invertedR: number[][] = [];
   additivR: number[][] = [];
+  r_2: number[][] = [];
 
   isCalculated: boolean = false;
 
@@ -63,6 +65,7 @@ export class AppComponent {
     this.strictR = this.strictRelation(this.relation);
     this.invertedR = this.transpose(this.relation);
     this.additivR = this.additiveRelation(this.relation);
+    this.r_2 = this.composition(this.relation, this.relation);
 
     this.findBestElements();
     this.findWorstElements();
@@ -70,6 +73,23 @@ export class AppComponent {
     this.findMinElements(this.strictR);
 
     this.isCalculated = true;
+  }
+
+  composition(r1: number[][], r2: number[][]) {
+    let result: number[][] = [];
+    let curRow = 0;
+    for (let i = 0; i < r1.length; i++) {
+      result.push([]);
+      for (let j = 0; j < r2.length; j++) {
+        let mins = [];
+        for (let k = 0; k < r1.length; k++) {
+          mins.push(Math.min(r1[i][k], r2[k][j]));
+        }
+        result[curRow].push(Math.max(...mins));
+      }
+      curRow++;
+    }
+    return result;
   }
 
   findBestElements() {
@@ -245,7 +265,7 @@ export class AppComponent {
   }
 
   checkTransitive(): boolean {
-    const r2 = this.combineRelations(this.relation, this.relation);
+    const r2 = this.composition(this.relation, this.relation);
     for (let i = 0; i < this.elements; i++) {
       for (let j = 0; j < this.elements; j++) {
         if (r2[i][j] > this.relation[i][j]) {

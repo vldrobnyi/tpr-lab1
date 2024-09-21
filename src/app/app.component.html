@@ -6,10 +6,10 @@
       </div>
       <div class="row justify-content-center mb-4">
         <div class="col-1 mb-3">
-          <label for="elements" class="form-label">Кількість елементів</label>
+          <label for="elements" class="form-label text-nowrap mb-2">Кількість елементів</label>
           <input [(ngModel)]="elements" (change)="generateMatrix()" name="elements" type="number" min="0"
             class="form-control" id="elements">
-          <button class="btn btn-primary mt-3" (click)="calculate()">Розрахувати</button>
+          <button class="btn btn-primary w-100 mt-3" (click)="calculate()">Розрахувати</button>
         </div>
       </div>
 
@@ -36,26 +36,28 @@
         </div>
         <div class="col-8 row">
           @if (isCalculated) {
-          <div class="col-6 d-flex flex-column gap-3">
-            <h4>Чи є рефлексивним: {{isReflexive ? 'Так' : 'Ні'}}</h4>
-            <h4>Чи є антирефлексивним: {{isIrreflexive ? 'Так' : 'Ні'}}</h4>
-            <h4>Чи є симетричним: {{isSymmetric ? 'Так' : 'Ні'}}</h4>
-            <h4>Чи є асиметричним: {{isAsymmetric ? 'Так' : 'Ні'}}</h4>
-            <h4>Чи є антисиметричним: {{isAntisymmetric ? 'Так' : 'Ні'}}</h4>
-            <h4 class="mb-4">Чи є транзитивним: {{isTransitive ? 'Так' : 'Ні'}}</h4>
+          <div class="col-6 d-flex flex-column align-items-center gap-3">
+            <h4>Чи є рефлексивним: <b class="{{isReflexive ? 'text-success' : 'text-danger'}}">{{isReflexive ? 'Так' : 'Ні'}}</b></h4>
+            <h4>Чи є антирефлексивним: <b class="{{isIrreflexive ? 'text-success' : 'text-danger'}}">{{isIrreflexive ? 'Так' : 'Ні'}}</b></h4>
+            <h4>Чи є симетричним: <b class="{{isSymmetric ? 'text-success' : 'text-danger'}}">{{isSymmetric ? 'Так' : 'Ні'}}</b></h4>
+            <h4>Чи є асиметричним: <b class="{{isAsymmetric ? 'text-success' : 'text-danger'}}">{{isAsymmetric ? 'Так' : 'Ні'}}</b></h4>
+            <h4>Чи є антисиметричним: <b class="{{isAntisymmetric ? 'text-success' : 'text-danger'}}">{{isAntisymmetric ? 'Так' : 'Ні'}}</b></h4>
+            <h4>Чи є транзитивним: <b class="{{isTransitive ? 'text-success' : 'text-danger'}}">{{isTransitive ? 'Так' : 'Ні'}}</b></h4>
+            <hr class="opacity-100 w-100">
             <h4>
-              Найкращі значення:
-              @if (bestElements.length === 0) {
-              Відсутні
-              }
-              @else {
-              @for(el of bestElements; track $index){
-              x{{el + 1}}{{$last ? '' : ', '}}
-              }
-              }
+              Найкращі значення: <b class="{{bestElements.length === 0 ? 'text-danger' : 'text-success'}}">
+                @if (bestElements.length === 0) {
+                  Відсутні
+                  }
+                  @else {
+                  @for(el of bestElements; track $index){
+                  x{{el + 1}}{{$last ? '' : ', '}}
+                  }
+                  }
+              </b>              
             </h4>
             <h4>
-              Найгірші значення:
+              Найгірші значення: <b class="{{worstElements.length === 0 ? 'text-danger' : 'text-success'}}">
               @if (worstElements.length === 0) {
               Відсутні
               }
@@ -64,32 +66,35 @@
               x{{el + 1}}{{$last ? '' : ', '}}
               }
               }
+            </b>
             </h4>
             <h4>
-              Максимальні значення:
-              @if (maxElements.length === 0) {
-              Відсутні
-              }
-              @else {
-              @for(el of maxElements; track $index){
-              x{{el + 1}}{{$last ? '' : ', '}}
-              }
-              }
+              Максимальні значення: <b class="{{maxElements.length === 0 ? 'text-danger' : 'text-success'}}">
+                @if (maxElements.length === 0) {
+                  Відсутні
+                  }
+                  @else {
+                  @for(el of maxElements; track $index){
+                  x{{el + 1}}{{$last ? '' : ', '}}
+                  }
+                  }
+              </b>              
             </h4>
             <h4>
-              Мінімальні значення:
-              @if (minElements.length === 0) {
-              Відсутні
-              }
-              @else {
-              @for(el of minElements; track $index){
-              x{{el + 1}}{{$last ? '' : ', '}}
-              }
-              }
+              Мінімальні значення: <b class="{{minElements.length === 0 ? 'text-danger' : 'text-success'}}">
+                @if (minElements.length === 0) {
+                  Відсутні
+                  }
+                  @else {
+                  @for(el of minElements; track $index){
+                  x{{el + 1}}{{$last ? '' : ', '}}
+                  }
+                  }
+              </b>              
             </h4>
           </div>
 
-          <div class="col-6 d-flex flex-column align-items-center">
+          <div class="col-6 d-flex flex-column align-items-center gap-1">
             <!-- Inverted -->
             <h3>Обернене відношення:</h3>
             <div class="matrix position-relative">
@@ -142,6 +147,25 @@
                 @for (el of row; track $index; let elIdx = $index){
                 <input [value]="strictR[rowIdx][elIdx]" disabled="" min="0" max="1" type="number"
                   [name]="'s{{rowIdx}}{{elIdx}}'" [id]="'s{{rowIdx}}{{elIdx}}'">
+                }
+              </div>
+              }
+            </div>
+            <!---->
+            <!-- R^2 -->
+            <h3>R^2 відношення:</h3>
+            <div class="matrix position-relative">
+              <div class="elements-names d-flex justify-content-between">
+                @for (_ of r_2; track $index; let i = $index){
+                <span>x{{i + 1}}</span>
+                }
+              </div>
+              @for (row of r_2; track $index; let rowIdx = $index){
+              <div class="matrix-row">
+                <span class="row-element-name">x{{rowIdx + 1}}</span>
+                @for (el of row; track $index; let elIdx = $index){
+                <input [value]="r_2[rowIdx][elIdx]" disabled="" min="0" max="1" type="number"
+                  [name]="'r2{{rowIdx}}{{elIdx}}'" [id]="'r2{{rowIdx}}{{elIdx}}'">
                 }
               </div>
               }
